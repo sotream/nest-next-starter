@@ -79,18 +79,33 @@ export function VehicleForm({ vehicle, onSubmit, onCancel }: VehicleFormProps) {
           <label htmlFor="fuelType" className="mb-1 block text-sm font-medium text-zinc-700">
             Fuel type
           </label>
-          <select
-            id="fuelType"
-            name="fuelType"
-            defaultValue={vehicle?.fuelType ?? 'PETROL'}
-            className={inputClass}
-          >
-            {FUEL_TYPES.map((fuel) => (
-              <option key={fuel} value={fuel}>
-                {fuelLabel(fuel)}
-              </option>
-            ))}
-          </select>
+          {/* appearance-none drops the native arrow, which hugs the edge; this one has room. */}
+          <div className="relative">
+            <select
+              id="fuelType"
+              name="fuelType"
+              defaultValue={vehicle?.fuelType ?? 'PETROL'}
+              className={`${inputClass} appearance-none pr-10`}
+            >
+              {FUEL_TYPES.map((fuel) => (
+                <option key={fuel} value={fuel}>
+                  {fuelLabel(fuel)}
+                </option>
+              ))}
+            </select>
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 20 20"
+              className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-zinc-600"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="m5 8 5 5 5-5" />
+            </svg>
+          </div>
         </div>
       </div>
       <div role="alert" aria-live="polite">
