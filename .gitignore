@@ -1,0 +1,35 @@
+# Dependencies and build output
+node_modules/
+dist/
+.next/
+.turbo/
+coverage/
+*.tsbuildinfo
+
+# Private local docs
+docs/private/
+docs/notes/
+
+# Local runtime data (DB, Kafka, Redis)
+.data/
+pgdata/
+kafka-data/
+dump.rdb
+appendonly.aof
+*.dump
+*.sql.gz
+*.sqlite
+
+# Environment files
+.env*
+!.env.example
+
+# Claude Code personal overrides
+.claude/settings.local.json
+CLAUDE.local.md
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.log
