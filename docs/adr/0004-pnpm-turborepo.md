@@ -24,4 +24,4 @@ together. We want one install, one command to run everything, and cached task ru
 ## Consequences
 
 - Only two apps exist, so there are no shared packages. Add `packages/*` when code is genuinely shared.
-- Contributors need Node 22.13 or newer and pnpm (via Corepack).
+- Contributors need Node 24 or newer and pnpm (via Corepack).

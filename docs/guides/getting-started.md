@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Node 22.13 or newer. With nvm: `nvm install && nvm use` (reads `.nvmrc`).
+- Node 24 or newer (the current LTS). With nvm: `nvm install && nvm use` (reads `.nvmrc`).
 - pnpm through Corepack: `corepack enable`. The version comes from `packageManager`.
 - Docker with Compose v2.
 

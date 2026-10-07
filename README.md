@@ -10,7 +10,7 @@ a vehicles CRUD with tests, CI and conventions that are easy for people and AI a
 
 | Area      | Choice                                                                                  |
 | --------- | --------------------------------------------------------------------------------------- |
-| Monorepo  | pnpm workspaces, Turborepo, Node 22                                                     |
+| Monorepo  | pnpm workspaces, Turborepo, Node 24                                                     |
 | API       | NestJS 12, TypeORM with migrations, PostgreSQL, Redis, Swagger, Terminus health checks  |
 | Auth      | JWT access token, rotating httpOnly refresh cookie with reuse detection, roles          |
 | Safety    | Env validation, Helmet, CORS, validation pipe, Redis rate limiting, pino with redaction |
@@ -22,7 +22,7 @@ a vehicles CRUD with tests, CI and conventions that are easy for people and AI a
 
 ## Prerequisites
 
-- Node 22.13+ (`nvm install && nvm use` reads `.nvmrc`)
+- Node 24+ (`nvm install && nvm use` reads `.nvmrc`)
 - pnpm via Corepack (`corepack enable`)
 - Docker with Compose v2
 

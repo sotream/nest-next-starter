@@ -5,7 +5,7 @@ monorepo. People clone it to start projects, so favour clarity and small, easy-t
 
 ## Stack
 
-Node 22, pnpm, Turborepo, TypeScript strict. API: NestJS 12 (ESM), TypeORM, PostgreSQL, Redis, optional
+Node 24, pnpm, Turborepo, TypeScript strict. API: NestJS 12 (ESM), TypeORM, PostgreSQL, Redis, optional
 Kafka, Vitest. Web: Next.js App Router, React, Tailwind. Infra in `docker-compose.yml` only.
 
 ## Commands

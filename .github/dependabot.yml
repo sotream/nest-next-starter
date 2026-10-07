@@ -7,6 +7,12 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+    ignore:
+      # Match the Node LTS in .nvmrc, and stay on ioredis 5 (TypeORM's peer range).
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+      - dependency-name: ioredis
+        update-types: ['version-update:semver-major']
   - package-ecosystem: github-actions
     directory: /
     schedule:
@@ -15,7 +21,14 @@ updates:
     directory: /apps/api
     schedule:
       interval: weekly
+    # Move Node only to the next LTS (even major, after it is promoted); Node 25+ has no corepack.
+    ignore:
+      - dependency-name: node
+        update-types: ['version-update:semver-major']
   - package-ecosystem: docker
     directory: /apps/web
     schedule:
       interval: weekly
+    ignore:
+      - dependency-name: node
+        update-types: ['version-update:semver-major']
