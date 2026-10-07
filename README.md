@@ -1,8 +1,6 @@
 # nest-next-starter
 
-[![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
-
-> Replace `OWNER/REPO` in the badge above with the GitHub path of your repository.
+[![CI](https://github.com/sotream/nest-next-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/sotream/nest-next-starter/actions/workflows/ci.yml)
 
 A fullstack monorepo to start new projects from: a NestJS API with auth, a database and an optional
 message broker, and a Next.js web app. Clone it, run four commands, and you have a working sign-in and
