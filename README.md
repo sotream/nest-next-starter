@@ -85,21 +85,24 @@ docs/    architecture, ADRs, guides
 ## Documentation
 
 - [Architecture overview](docs/architecture/overview.md)
-- Decisions: [0001 Modular monolith](docs/adr/0001-modular-monolith.md),
-  [0002 Refresh rotation](docs/adr/0002-auth-refresh-rotation.md),
-  [0003 Logging](docs/adr/0003-pino-logging.md),
-  [0004 pnpm and Turborepo](docs/adr/0004-pnpm-turborepo.md),
-  [0005 Optional Kafka](docs/adr/0005-kafka-optional.md),
-  [0006 Toolchain choices](docs/adr/0006-toolchain-choices.md),
-  [0007 No trust proxy](docs/adr/0007-no-trust-proxy.md),
-  [0008 Rate limiting fails open](docs/adr/0008-throttler-redis-fail-open.md),
-  [0009 CSP allows inline scripts](docs/adr/0009-csp-unsafe-inline.md)
-- Guides: [Getting started](docs/guides/getting-started.md),
-  [Database and migrations](docs/guides/database-and-migrations.md),
-  [Authentication](docs/guides/authentication.md),
-  [Kafka walkthrough](docs/guides/kafka-exercise.md),
-  [Testing](docs/guides/testing.md),
-  [Working with Claude Code](docs/guides/ai-agent-workflow.md)
+- Decisions (ADR):
+  - [0001 Modular monolith](docs/adr/0001-modular-monolith.md)
+  - [0002 Refresh rotation](docs/adr/0002-auth-refresh-rotation.md)
+  - [0003 Logging](docs/adr/0003-pino-logging.md)
+  - [0004 pnpm and Turborepo](docs/adr/0004-pnpm-turborepo.md)
+  - [0005 Optional Kafka](docs/adr/0005-kafka-optional.md)
+  - [0006 Toolchain choices](docs/adr/0006-toolchain-choices.md)
+  - [0007 No trust proxy](docs/adr/0007-no-trust-proxy.md)
+  - [0008 Rate limiting fails open](docs/adr/0008-throttler-redis-fail-open.md)
+  - [0009 CSP allows inline scripts](docs/adr/0009-csp-unsafe-inline.md)
+- Guides:
+  - [Getting started](docs/guides/getting-started.md)
+  - [Database and migrations](docs/guides/database-and-migrations.md)
+  - [Authentication](docs/guides/authentication.md)
+  - [Deployment](docs/guides/deployment.md)
+  - [Kafka walkthrough](docs/guides/kafka-exercise.md)
+  - [Testing](docs/guides/testing.md)
+  - [Working with Claude Code](docs/guides/ai-agent-workflow.md)
 
 ## Using this as a template
 
