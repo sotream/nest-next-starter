@@ -19,8 +19,11 @@
     "infra:up": "docker compose up -d --wait",
     "infra:down": "docker compose down",
     "db:migrate": "pnpm --filter api db:migrate",
+    "db:migrate:generate": "pnpm --filter api db:migrate:generate",
+    "db:migrate:revert": "pnpm --filter api db:migrate:revert",
     "db:seed": "pnpm --filter api db:seed",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test:browser": "pnpm --filter web test:browser"
   },
   "lint-staged": {
     "*.{ts,tsx,js,mjs,cjs}": [

@@ -1,0 +1,22 @@
+@import 'tailwindcss';
+
+/* Cool neutrals plus one accent (the blue of the EU plate band). Change --color-accent to re-skin. */
+@theme {
+  --font-sans: var(--font-atkinson), ui-sans-serif, system-ui, sans-serif;
+  --color-paper: #f4f5f6;
+  --color-ink: #16191d;
+  --color-accent: #1d4e9e;
+  --color-accent-strong: #163e7e;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* One visible focus style for every interactive element. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}

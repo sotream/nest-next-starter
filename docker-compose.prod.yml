@@ -1,0 +1,98 @@
+# Reference configuration without a reverse proxy, not a deployment recommendation. See ADR 0007.
+#
+# Runs the built images with APP_ENV=prod: strong secrets are required (the stack refuses to start
+# without them), Swagger is off and nothing here terminates TLS. Required variables, for example from
+# `docker compose --env-file .env.prod -f docker-compose.prod.yml up --build`:
+#   WEB_ORIGIN         exact https origin of the web app, e.g. https://app.example.com
+#   API_PUBLIC_URL     https URL the browser uses for the API, e.g. https://api.example.com (baked into the web image)
+#   JWT_ACCESS_SECRET  at least 32 random characters
+#   POSTGRES_PASSWORD  not "app"
+#   REDIS_PASSWORD     any non-empty value
+# Passwords are placed in connection URLs: use only URL-safe characters (for example `openssl rand -hex 24`).
+name: nest-next-starter-prod
+
+x-api-env: &api-env
+  APP_ENV: prod
+  PORT: 4000
+  WEB_ORIGIN: ${WEB_ORIGIN:?set WEB_ORIGIN to the https origin of the web app}
+  DATABASE_URL: postgres://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-app}
+  REDIS_URL: redis://:${REDIS_PASSWORD:?set REDIS_PASSWORD}@redis:6379
+  JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?set JWT_ACCESS_SECRET}
+  LOG_LEVEL: ${LOG_LEVEL:-info}
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:8-alpine
+    restart: unless-stopped
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?set REDIS_PASSWORD}
+    command: ['sh', '-c', 'exec redis-server --requirepass "$$REDIS_PASSWORD"']
+    healthcheck:
+      test: ['CMD-SHELL', 'REDISCLI_AUTH="$$REDIS_PASSWORD" redis-cli ping | grep -q PONG']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Migrations are their own step, never part of API startup. Runs once and exits.
+  migrate:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    image: nest-next-starter-api:local
+    restart: 'no'
+    environment: *api-env
+    command:
+      - node
+      - node_modules/typeorm/cli.js
+      - migration:run
+      - -d
+      - dist/infrastructure/database/data-source.js
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    image: nest-next-starter-api:local
+    restart: unless-stopped
+    environment: *api-env
+    ports:
+      - '4000:4000'
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${API_PUBLIC_URL:?set API_PUBLIC_URL to the https URL of the API}
+    image: nest-next-starter-web:local
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    depends_on:
+      - api
+
+volumes:
+  postgres-data:
