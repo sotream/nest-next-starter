@@ -123,13 +123,17 @@ The starter ships Dockerfiles for both apps and a reference `docker-compose.prod
 platform. Read the [deployment guide](docs/guides/deployment.md) and
 [ADR 0007](docs/adr/0007-no-trust-proxy.md) before deploying behind a proxy.
 
+## About this project
+
+A personal template, shared as is. It comes with no warranty and no support, and I make no promise to
+review issues or pull requests, answer questions or keep it up to date. Use it, fork it and change it
+freely under the [MIT license](LICENSE); check it against your own security and compliance needs before
+you run it in production.
+
 ## Open questions
 
 - **Target platform** (VPS, PaaS, other). It decides whether a reverse proxy is needed; if so, revisit
   [ADR 0007](docs/adr/0007-no-trust-proxy.md) before the first deployment.
-- **Repository path** for the CI badge (`OWNER/REPO` above).
-- **Making the repository public.** gitleaks found nothing in the history when this was written, but run it
-  again and rotate anything it reports before publishing.
 - **Review the audit ignore** (`GHSA-vfj7-8cjw-p6xm`, braces) by 2026-12-07; see `auditConfig` in
   `pnpm-workspace.yaml` and the `audit` job in `.github/workflows/ci.yml`.
 - **Not yet verified on real infrastructure:** CI on GitHub (nothing has run there), the production images
@@ -137,9 +141,13 @@ platform. Read the [deployment guide](docs/guides/deployment.md) and
 
 ## Contributing
 
-Commits follow [Conventional Commits](https://www.conventionalcommits.org) and are checked by a
-`commit-msg` hook: `feat(api): add vehicle search`, `fix(web): keep form values on error`. Keep changes
-small. Before opening a pull request run `pnpm lint && pnpm typecheck && pnpm test && pnpm build`.
+Pull requests and issues are welcome but may go unanswered (see [About this project](#about-this-project)).
+For anything bigger than a small fix, fork the repository instead. If you do send a change, commits
+follow [Conventional Commits](https://www.conventionalcommits.org) and are checked by a `commit-msg` hook:
+`feat(api): add vehicle search`, `fix(web): keep form values on error`. Keep changes small. Before
+opening a pull request run `pnpm lint && pnpm typecheck && pnpm test && pnpm build`.
+
+To report a vulnerability, see [SECURITY.md](SECURITY.md).
 
 ## License
 
