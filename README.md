@@ -130,6 +130,9 @@ review issues or pull requests, answer questions or keep it up to date. Use it, 
 freely under the [MIT license](LICENSE); check it against your own security and compliance needs before
 you run it in production.
 
+Built with Claude Code. I made the design decisions and reviewed and tested the code; the reasoning is in
+the [ADRs](docs/adr) and the [AI agent workflow](docs/guides/ai-agent-workflow.md).
+
 ## Open questions
 
 - **Target platform** (VPS, PaaS, other). It decides whether a reverse proxy is needed; if so, revisit
