@@ -1,12 +1,14 @@
 @import 'tailwindcss';
 
-/* Cool neutrals plus one accent (the blue of the EU plate band). Change --color-accent to re-skin. */
+/* Cool neutrals, a dark sidebar and one accent. Change --color-accent to re-skin the app and the logo. */
 @theme {
-  --font-sans: var(--font-atkinson), ui-sans-serif, system-ui, sans-serif;
-  --color-paper: #f4f5f6;
-  --color-ink: #16191d;
-  --color-accent: #1d4e9e;
-  --color-accent-strong: #163e7e;
+  --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --color-paper: #f2f4f8;
+  --color-ink: #172033;
+  --color-accent: #2459d3;
+  --color-accent-strong: #1b46b0;
+  --color-sidebar: #101a2c;
+  --color-sidebar-ink: #aab6cc;
 }
 
 body {

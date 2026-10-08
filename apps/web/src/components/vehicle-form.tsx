@@ -54,7 +54,7 @@ export function VehicleForm({ vehicle, onSubmit, onCancel }: VehicleFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 rounded-md border border-zinc-300 bg-white p-4"
+      className="space-y-4 rounded-lg border border-zinc-200 bg-white p-5"
       aria-label={vehicle ? 'Edit vehicle' : 'Add vehicle'}
     >
       <h2 className="text-lg font-semibold">{vehicle ? 'Edit vehicle' : 'Add vehicle'}</h2>

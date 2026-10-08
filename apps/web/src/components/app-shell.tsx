@@ -22,14 +22,18 @@ function SidebarContent({
   const pathname = usePathname();
   const { user } = useAuth();
   return (
-    <div className="flex h-full flex-col gap-6 p-4">
-      <Link href="/" onClick={onNavigate} className="flex items-center gap-2 font-semibold">
-        <Logo />
+    <div className="flex h-full flex-col bg-sidebar text-sidebar-ink">
+      <Link
+        href="/"
+        onClick={onNavigate}
+        className="flex h-14 shrink-0 items-center gap-2.5 border-b border-white/10 px-4 font-semibold tracking-tight text-white"
+      >
+        <Logo className="size-7" />
         nest-next-starter
       </Link>
-      <nav aria-label="Main" className="flex-1">
-        <ul className="space-y-1">
-          {NAV_ITEMS.map(({ href, label }) => {
+      <nav aria-label="Main" className="flex-1 p-3">
+        <ul className="space-y-0.5">
+          {NAV_ITEMS.map(({ href, label, icon }) => {
             const active = pathname === href || pathname.startsWith(`${href}/`);
             return (
               <li key={href}>
@@ -37,10 +41,22 @@ function SidebarContent({
                   href={href}
                   onClick={onNavigate}
                   aria-current={active ? 'page' : undefined}
-                  className={`flex min-h-10 items-center rounded-md px-3 text-sm ${
-                    active ? 'bg-accent/10 font-semibold text-accent' : 'hover:bg-zinc-100'
+                  className={`flex h-9 items-center gap-3 rounded-md px-3 text-sm font-medium ${
+                    active ? 'bg-white/10 text-white' : 'hover:bg-white/5 hover:text-white'
                   }`}
                 >
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    className={`size-[18px] shrink-0 ${active ? 'text-white' : 'text-sidebar-ink'}`}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d={icon} />
+                  </svg>
                   {label}
                 </Link>
               </li>
@@ -48,13 +64,40 @@ function SidebarContent({
           })}
         </ul>
       </nav>
-      <div className="border-t border-zinc-300 pt-4 text-sm">
-        <p className="mb-2 truncate text-zinc-600" title={user?.email}>
-          {user?.email}
-        </p>
-        <Button variant="secondary" className="w-full" onClick={onSignOut}>
+      <div className="border-t border-white/10 p-3">
+        <div className="flex items-center gap-3 px-1 pb-3">
+          <span
+            aria-hidden="true"
+            className="flex size-8 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-semibold text-white"
+          >
+            {user?.email.charAt(0).toUpperCase()}
+          </span>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium text-white" title={user?.email}>
+              {user?.email}
+            </p>
+            <p className="text-xs">{user?.role === 'ADMIN' ? 'Administrator' : 'User'}</p>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={onSignOut}
+          className="flex h-9 w-full items-center gap-3 rounded-md px-3 text-sm font-medium hover:bg-white/5 hover:text-white"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            className="size-[18px] shrink-0"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4m7 14 5-5-5-5m5 5H9" />
+          </svg>
           Sign out
-        </Button>
+        </button>
       </div>
     </div>
   );
@@ -107,29 +150,30 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen md:flex">
-      <aside className="hidden w-60 shrink-0 border-r border-zinc-300 bg-white md:block">
+      <aside className="hidden w-60 shrink-0 md:block">
         <div className="sticky top-0 h-dvh">
           <SidebarContent onNavigate={closeDrawer} onSignOut={() => void handleSignOut()} />
         </div>
       </aside>
 
       <div className="min-w-0 flex-1">
-        <header className="flex items-center gap-3 border-b border-zinc-300 bg-white px-4 py-2 md:hidden">
-          <Button
-            variant="secondary"
+        <header className="flex h-14 items-center gap-2 bg-sidebar px-3 text-white md:hidden">
+          <button
+            type="button"
             aria-label="Open menu"
             aria-haspopup="dialog"
-            className="w-10 px-0"
+            className="flex size-10 items-center justify-center rounded-md hover:bg-white/10"
             onClick={() => drawer.current?.showModal()}
           >
             <svg viewBox="0 0 24 24" aria-hidden="true" className="size-5">
               <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" fill="none" />
             </svg>
-          </Button>
-          <Logo />
+          </button>
+          <Logo className="size-7" />
+          <span className="font-semibold tracking-tight">nest-next-starter</span>
         </header>
 
-        <main className="mx-auto w-full max-w-3xl px-4 py-8">
+        <main className="mx-auto w-full max-w-5xl px-4 py-8 md:px-8">
           {signOutFailed && (
             <div className="mb-6">
               <Message alert>
@@ -148,7 +192,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         onClick={(event: MouseEvent<HTMLDialogElement>) =>
           event.target === event.currentTarget && closeDrawer()
         }
-        className="m-0 h-dvh max-h-none w-64 max-w-[80vw] bg-white p-0 text-ink backdrop:bg-black/40 md:hidden"
+        className="m-0 h-dvh max-h-none w-64 max-w-[80vw] bg-sidebar p-0 backdrop:bg-black/50 md:hidden"
       >
         <SidebarContent onNavigate={closeDrawer} onSignOut={() => void handleSignOut()} />
       </dialog>

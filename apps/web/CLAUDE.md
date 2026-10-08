@@ -19,8 +19,8 @@ src/lib/         api-client (typed, token in memory, one retry after refresh), a
   in-flight refresh (queued across tabs with a Web Lock), because refresh tokens rotate (parallel
   refreshes look like theft).
 - Types in `src/lib/types.ts` mirror the API by hand; update both sides together.
-- Styling: Tailwind utilities, tokens in `globals.css` (`accent`, `paper`, `ink`), `zinc` neutrals, one
-  font family. Keep the UI small; it is meant to be replaced.
+- Styling: Tailwind utilities, tokens in `globals.css` (`accent`, `paper`, `ink`, `sidebar`), `zinc`
+  neutrals, one font family (IBM Plex Sans). The logo and favicon follow `accent`. Keep the UI small; it is meant to be replaced.
 - Every data view handles loading, empty and error states with plain-language text.
 - This Next.js version differs from older ones. Check `node_modules/next/dist/docs/` before relying on
   remembered APIs.

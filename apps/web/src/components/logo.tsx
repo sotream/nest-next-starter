@@ -1,10 +1,25 @@
-/** A licence plate with the EU-style band and an "N". Colors follow the `accent` tokens. */
+/** An "S" for sotream in an unclosed code block with a cursor. The tile follows the `accent` token. */
 export function Logo({ className = 'size-8' }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" aria-hidden="true" className={className}>
-      <rect x="2" y="7" width="28" height="18" rx="4" className="fill-accent" />
-      <path d="M8 7v18H6a4 4 0 0 1-4-4V11a4 4 0 0 1 4-4z" className="fill-accent-strong" />
-      <path d="M12 21V11h2.4l5.2 6.6V11H22v10h-2.4l-5.2-6.6V21z" fill="#fff" />
+    <svg
+      viewBox="0 0 32 32"
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="#fff"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect width="32" height="32" rx="8" className="fill-accent" stroke="none" />
+      <path
+        d="M7 7.5c-2 0-2.5 1-2.5 2.5v2.5c0 1.5-.8 3.5-2 3.5 1.2 0 2 2 2 3.5V22c0 1.5.5 2.5 2.5 2.5"
+        strokeWidth="1.8"
+      />
+      <path
+        d="M19 12.5C18.5 10.8 16.8 9.5 14.5 9.5c-2.3 0-3.9 1.2-3.9 2.9 0 1.9 1.8 2.6 3.9 3.2 2.1.6 3.9 1.4 3.9 3.4 0 1.9-1.7 3.5-3.9 3.5-2.2 0-3.8-1.1-4.2-3"
+        strokeWidth="2.4"
+      />
+      <rect x="21.5" y="19.8" width="4.8" height="2.8" rx=".7" fill="#fff" stroke="none" />
     </svg>
   );
 }

@@ -6,6 +6,10 @@ import { Button } from './button';
 import { PlateChip } from './plate-chip';
 import { fuelLabel } from './vehicle-form';
 
+/** Shared by the table header in `vehicles-view.tsx` so the columns line up. */
+export const VEHICLE_COLUMNS =
+  'grid items-center gap-x-4 sm:grid-cols-[minmax(0,9rem)_minmax(0,1fr)_5rem_13rem]';
+
 interface VehicleRowProps {
   vehicle: Vehicle;
   onEdit: () => void;
@@ -29,15 +33,13 @@ export function VehicleRow({ vehicle, onEdit, onDelete }: VehicleRowProps) {
   }
 
   return (
-    <li className="flex flex-wrap items-center justify-between gap-3 py-3">
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+    <li className={`${VEHICLE_COLUMNS} gap-y-2 px-4 py-3 hover:bg-zinc-50`}>
+      <div>
         <PlateChip plate={vehicle.plateNumber} />
-        <p className="text-zinc-700">
-          {vehicle.model}
-          <span className="text-zinc-600">, {fuelLabel(vehicle.fuelType).toLowerCase()}</span>
-        </p>
       </div>
-      <div className="flex items-center gap-2">
+      <p className="truncate font-medium">{vehicle.model}</p>
+      <p className="text-sm text-zinc-600">{fuelLabel(vehicle.fuelType)}</p>
+      <div className="flex flex-wrap items-center gap-2 sm:justify-end">
         {failed && (
           <span role="alert" className="text-sm text-red-700">
             Could not delete. Try again.
@@ -45,20 +47,26 @@ export function VehicleRow({ vehicle, onEdit, onDelete }: VehicleRowProps) {
         )}
         {confirming ? (
           <>
-            <Button variant="danger" onClick={confirmDelete} disabled={deleting}>
+            <Button variant="danger" size="sm" onClick={confirmDelete} disabled={deleting}>
               {deleting ? 'Deleting…' : 'Confirm delete'}
             </Button>
-            <Button variant="secondary" onClick={() => setConfirming(false)}>
+            <Button variant="secondary" size="sm" onClick={() => setConfirming(false)}>
               Cancel
             </Button>
           </>
         ) : (
           <>
-            <Button variant="secondary" onClick={onEdit} aria-label={`Edit ${vehicle.plateNumber}`}>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={onEdit}
+              aria-label={`Edit ${vehicle.plateNumber}`}
+            >
               Edit
             </Button>
             <Button
               variant="secondary"
+              size="sm"
               onClick={() => setConfirming(true)}
               aria-label={`Delete ${vehicle.plateNumber}`}
             >

@@ -6,8 +6,9 @@ import type { Page, Vehicle, VehicleInput } from '@/lib/types';
 import { PAGE_SIZE, useVehiclePage } from '@/lib/use-vehicle-page';
 import { Button } from './button';
 import { Message } from './message';
+import { PageHeader } from './page-header';
 import { VehicleForm } from './vehicle-form';
-import { VehicleRow } from './vehicle-row';
+import { VehicleRow, VEHICLE_COLUMNS } from './vehicle-row';
 
 /** `new` opens the create form; a vehicle opens the edit form; null shows neither. */
 type Editing = 'new' | Vehicle | null;
@@ -22,13 +23,17 @@ function Pagination({
   const from = page.total === 0 ? 0 : page.offset + 1;
   const to = page.offset + page.items.length;
   return (
-    <nav aria-label="Pagination" className="mt-4 flex items-center justify-between text-sm">
+    <nav
+      aria-label="Pagination"
+      className="flex items-center justify-between border-t border-zinc-200 px-4 py-3 text-sm"
+    >
       <p className="text-zinc-600">
         {from}–{to} of {page.total}
       </p>
       <div className="flex gap-2">
         <Button
           variant="secondary"
+          size="sm"
           disabled={page.offset === 0}
           onClick={() => onChange(Math.max(0, page.offset - PAGE_SIZE))}
         >
@@ -36,6 +41,7 @@ function Pagination({
         </Button>
         <Button
           variant="secondary"
+          size="sm"
           disabled={to >= page.total}
           onClick={() => onChange(page.offset + PAGE_SIZE)}
         >
@@ -67,9 +73,13 @@ export function VehiclesView() {
 
   return (
     <div>
-      <h1 className="mb-8 border-b border-zinc-300 pb-4 text-2xl font-semibold">Vehicles</h1>
+      <PageHeader
+        title="Vehicles"
+        description="Registered vehicles and their fuel type."
+        action={!editing && <Button onClick={() => setEditing('new')}>Add vehicle</Button>}
+      />
 
-      {editing ? (
+      {editing && (
         <div className="mb-6">
           <VehicleForm
             key={editing === 'new' ? 'new' : editing.id}
@@ -77,10 +87,6 @@ export function VehiclesView() {
             onSubmit={save}
             onCancel={() => setEditing(null)}
           />
-        </div>
-      ) : (
-        <div className="mb-6">
-          <Button onClick={() => setEditing('new')}>Add vehicle</Button>
         </div>
       )}
 
@@ -99,8 +105,16 @@ export function VehiclesView() {
         <Message>No vehicles yet. Add your first vehicle to get started.</Message>
       )}
       {state.status === 'ready' && state.page.items.length > 0 && (
-        <>
-          <ul className="divide-y divide-zinc-300 border-y border-zinc-300">
+        <div className="overflow-hidden rounded-lg border border-zinc-200 bg-white">
+          <div
+            className={`${VEHICLE_COLUMNS} hidden border-b border-zinc-200 bg-zinc-50 px-4 py-2 text-xs font-medium text-zinc-600 sm:grid`}
+          >
+            <span>Plate number</span>
+            <span>Model</span>
+            <span>Fuel type</span>
+            <span aria-hidden="true" />
+          </div>
+          <ul className="divide-y divide-zinc-200">
             {state.page.items.map((vehicle) => (
               <VehicleRow
                 key={vehicle.id}
@@ -111,7 +125,7 @@ export function VehiclesView() {
             ))}
           </ul>
           <Pagination page={state.page} onChange={goTo} />
-        </>
+        </div>
       )}
     </div>
   );
