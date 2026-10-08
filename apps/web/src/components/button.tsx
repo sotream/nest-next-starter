@@ -11,16 +11,19 @@ const VARIANTS: Record<Variant, string> = {
   danger: 'bg-red-700 text-white hover:bg-red-800 border-transparent',
 };
 
+/** Class names for anything that should look like a button, such as a link. */
+export function buttonClasses({
+  variant = 'primary',
+  size = 'md',
+}: { variant?: Variant; size?: Size } = {}): string {
+  return `inline-flex items-center justify-center rounded-md border text-sm font-medium disabled:cursor-not-allowed disabled:opacity-60 ${SIZES[size]} ${VARIANTS[variant]}`;
+}
+
 export function Button({
   variant = 'primary',
   size = 'md',
   className = '',
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant; size?: Size }) {
-  return (
-    <button
-      className={`inline-flex items-center justify-center rounded-md border text-sm font-medium disabled:cursor-not-allowed disabled:opacity-60 ${SIZES[size]} ${VARIANTS[variant]} ${className}`}
-      {...props}
-    />
-  );
+  return <button className={`${buttonClasses({ variant, size })} ${className}`} {...props} />;
 }

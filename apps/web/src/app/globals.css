@@ -22,3 +22,51 @@ body {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
+
+/* Status-page illustration. Motion only plays when the visitor has not asked for less of it. */
+@keyframes route-packet {
+  0%,
+  8% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  16% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+    transform: translateX(var(--route-travel));
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: translateX(var(--route-travel));
+  }
+}
+
+@keyframes route-ripple {
+  0%,
+  72% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  76% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .route-packet {
+    animation: route-packet 3.6s ease-in-out infinite;
+  }
+
+  .route-ripple {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: route-ripple 3.6s ease-out infinite;
+  }
+}

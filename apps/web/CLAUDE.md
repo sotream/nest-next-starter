@@ -15,6 +15,8 @@ src/lib/         api-client (typed, token in memory, one retry after refresh), a
 
 - Private pages live in `src/app/(app)/`. Its layout renders `AppShell` (session guard, sidebar, burger
   drawer on phones). A new page is a folder there plus one entry in `src/lib/nav.ts`.
+- `not-found.tsx` and the error boundaries (`error.tsx`, `(app)/error.tsx`, `global-error.tsx`) share
+  `StatusPage`. In this Next.js version an error boundary receives `retry`, not `reset`.
 - API access only through `src/lib/api-client.ts`. It retries once after a refresh and shares one
   in-flight refresh (queued across tabs with a Web Lock), because refresh tokens rotate (parallel
   refreshes look like theft).
