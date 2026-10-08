@@ -133,14 +133,11 @@ you run it in production.
 Built with Claude Code. I made the design decisions and reviewed and tested the code; the reasoning is in
 the [ADRs](docs/adr) and the [AI agent workflow](docs/guides/ai-agent-workflow.md).
 
-## Open questions
+## Known limitations
 
-- **Target platform** (VPS, PaaS, other). It decides whether a reverse proxy is needed; if so, revisit
-  [ADR 0007](docs/adr/0007-no-trust-proxy.md) before the first deployment.
-- **Review the audit ignore** (`GHSA-vfj7-8cjw-p6xm`, braces) by 2026-12-07; see `auditConfig` in
-  `pnpm-workspace.yaml` and the `audit` job in `.github/workflows/ci.yml`.
-- **Not yet verified on real infrastructure:** CI on GitHub (nothing has run there), the production images
-  behind real TLS, and Kafka outside local Docker.
+The production images are not yet verified behind real TLS, nor Kafka outside local Docker. The other
+trade-offs (no trusted proxy, rate limits off when Redis is down, access tokens valid until they expire)
+are listed in the [deployment guide](docs/guides/deployment.md#limitations).
 
 ## Contributing
 

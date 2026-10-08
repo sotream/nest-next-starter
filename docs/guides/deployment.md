@@ -81,7 +81,7 @@ Health endpoints: `GET /api/health/live` (process; used by the image `HEALTHCHEC
   you operate.
 - The seed users do not exist in prod. Create the first admin through your own, reviewed process.
 
-## Open questions
+## Decisions for your deployment
 
 - Target platform (VPS, PaaS, something else). It decides whether a reverse proxy is needed, and then
   ADR 0007 must be revisited before the first deployment.
