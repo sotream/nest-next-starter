@@ -1,25 +1,16 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { api } from '@/lib/api-client';
-import { useAuth } from '@/lib/auth-context';
 import type { Page, Vehicle, VehicleInput } from '@/lib/types';
 import { PAGE_SIZE, useVehiclePage } from '@/lib/use-vehicle-page';
 import { Button } from './button';
+import { Message } from './message';
 import { VehicleForm } from './vehicle-form';
 import { VehicleRow } from './vehicle-row';
 
 /** `new` opens the create form; a vehicle opens the edit form; null shows neither. */
 type Editing = 'new' | Vehicle | null;
-
-function Message({ children, alert = false }: { children: string; alert?: boolean }) {
-  return (
-    <p role={alert ? 'alert' : 'status'} className="border-y border-zinc-300 py-10 text-zinc-600">
-      {children}
-    </p>
-  );
-}
 
 function Pagination({
   page,
@@ -56,38 +47,8 @@ function Pagination({
 }
 
 export function VehiclesView() {
-  const router = useRouter();
-  const { status, user, signOut, retry } = useAuth();
   const { state, reload, goTo } = useVehiclePage();
   const [editing, setEditing] = useState<Editing>(null);
-  const [signOutFailed, setSignOutFailed] = useState(false);
-
-  useEffect(() => {
-    if (status === 'unauthenticated') router.replace('/sign-in');
-  }, [status, router]);
-
-  if (status === 'error') {
-    return (
-      <div className="mx-auto w-full max-w-3xl space-y-3 px-4 py-8">
-        <Message alert>
-          We could not check your session. Check your connection and try again.
-        </Message>
-        <Button variant="secondary" onClick={retry}>
-          Try again
-        </Button>
-      </div>
-    );
-  }
-  if (status !== 'authenticated') return <Message>Loading…</Message>;
-
-  async function handleSignOut() {
-    setSignOutFailed(false);
-    try {
-      await signOut();
-    } catch {
-      setSignOutFailed(true);
-    }
-  }
 
   async function save(input: VehicleInput) {
     await (editing && editing !== 'new'
@@ -105,22 +66,8 @@ export function VehiclesView() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-8">
-      <header className="mb-8 flex flex-wrap items-center justify-between gap-3 border-b border-zinc-300 pb-4">
-        <h1 className="text-2xl font-semibold">Vehicles</h1>
-        <div className="flex items-center gap-3 text-sm">
-          <span className="text-zinc-600">{user?.email}</span>
-          <Button variant="secondary" onClick={() => void handleSignOut()}>
-            Sign out
-          </Button>
-        </div>
-      </header>
-
-      {signOutFailed && (
-        <div className="mb-6">
-          <Message alert>We could not sign you out. Check your connection and try again.</Message>
-        </div>
-      )}
+    <div>
+      <h1 className="mb-8 border-b border-zinc-300 pb-4 text-2xl font-semibold">Vehicles</h1>
 
       {editing ? (
         <div className="mb-6">

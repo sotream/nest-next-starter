@@ -6,13 +6,15 @@ Next.js 16 App Router, React 19, Tailwind 4. Rules: [web-nextjs](../../.claude/r
 ## Layout
 
 ```
-src/app/         routes: (auth)/sign-in, (auth)/sign-up, vehicles, layout, globals.css
+src/app/         routes: (auth)/sign-in, (auth)/sign-up, (app)/vehicles, layout, globals.css
 src/components/  small presentational and form components
 src/lib/         api-client (typed, token in memory, one retry after refresh), auth-context, types, hooks
 ```
 
 ## Conventions
 
+- Private pages live in `src/app/(app)/`. Its layout renders `AppShell` (session guard, sidebar, burger
+  drawer on phones). A new page is a folder there plus one entry in `src/lib/nav.ts`.
 - API access only through `src/lib/api-client.ts`. It retries once after a refresh and shares one
   in-flight refresh (queued across tabs with a Web Lock), because refresh tokens rotate (parallel
   refreshes look like theft).
