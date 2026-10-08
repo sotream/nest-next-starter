@@ -17,8 +17,6 @@
 | Guides       | [Getting started](guides/getting-started.md)                           |
 |              | [Database and migrations](guides/database-and-migrations.md)           |
 |              | [Authentication](guides/authentication.md)                             |
-|              | [Kafka walkthrough](guides/kafka-exercise.md)                          |
+|              | [Kafka walkthrough](guides/kafka-walkthrough.md)                       |
 |              | [Testing](guides/testing.md)                                           |
 |              | [Working with Claude Code](guides/ai-agent-workflow.md)                |
-
-Images and diagrams that are not Mermaid live in [assets/images](assets/images).

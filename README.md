@@ -3,7 +3,7 @@
 [![CI](https://github.com/sotream/nest-next-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/sotream/nest-next-starter/actions/workflows/ci.yml)
 
 A fullstack monorepo to start new projects from: a NestJS API with auth, a database and an optional
-message broker, and a Next.js web app. Clone it, run four commands, and you have a working sign-in and
+message broker, and a Next.js web app. Clone it, run a few commands, and you have a working sign-in and
 a vehicles CRUD with tests, CI and conventions that are easy for people and AI agents to extend.
 
 ## What's included
@@ -100,7 +100,7 @@ docs/    architecture, ADRs, guides
   - [Database and migrations](docs/guides/database-and-migrations.md)
   - [Authentication](docs/guides/authentication.md)
   - [Deployment](docs/guides/deployment.md)
-  - [Kafka walkthrough](docs/guides/kafka-exercise.md)
+  - [Kafka walkthrough](docs/guides/kafka-walkthrough.md)
   - [Testing](docs/guides/testing.md)
   - [Working with Claude Code](docs/guides/ai-agent-workflow.md)
 
