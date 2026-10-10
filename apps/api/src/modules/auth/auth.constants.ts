@@ -12,3 +12,7 @@ export const AUTH_THROTTLE = { default: { limit: 10, ttl: 60_000 } };
  * keys are per route handler). Rotation and reuse detection already protect it from guessing.
  */
 export const REFRESH_THROTTLE = { default: { limit: 60, ttl: 60_000 } };
+
+/** Access tokens are for this API only (RFC 8725 s3.8, s3.9); other services must reject them. */
+export const JWT_ISSUER = 'nest-next-starter';
+export const JWT_AUDIENCE = 'nest-next-starter-api';

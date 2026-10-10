@@ -96,6 +96,8 @@ export class AuthController {
 
   private respond(res: Response, { user, accessToken, refreshToken }: AuthResult): AuthResponseDto {
     const maxAge = this.config.get('REFRESH_TOKEN_TTL_DAYS', { infer: true }) * DAY_MS;
+    // The body carries an access token, which no cache may keep.
+    res.setHeader('Cache-Control', 'no-store');
     res.cookie(REFRESH_COOKIE_NAME, refreshToken, { ...this.cookieOptions(), maxAge });
     return { accessToken, user: this.toUserDto(user) };
   }

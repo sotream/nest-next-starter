@@ -20,6 +20,8 @@ test/                    e2e specs and helpers
 - Routes are under `/api/v1`; `/api/health/live` (process) and `/api/health/ready` (database, Redis) are version neutral. Swagger is at `/api/docs`.
 - Config comes from `ConfigService<EnvironmentVariables, true>`; add new variables to
   `env.validation.ts` (with a local default) and `.env.example`.
+- Errors are problem documents (RFC 9457) produced by `ProblemDetailsFilter`; throw Nest exceptions with a
+  clear message and let the filter shape the response ([ADR 0010](../../docs/adr/0010-http-standards-conformance.md)).
 - `vehicles` is the reference module: copy its shape for new features (`/new-module`).
 
 ## Add a module

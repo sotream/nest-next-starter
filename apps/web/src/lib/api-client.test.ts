@@ -47,7 +47,7 @@ describe('api client', () => {
   });
 
   it('signs out instead of looping when the refresh fails', async () => {
-    const fetchMock = vi.fn().mockResolvedValue(json(401, { message: 'Unauthorized' }));
+    const fetchMock = vi.fn().mockResolvedValue(json(401, { status: 401, detail: 'Unauthorized' }));
     const { api, setSessionExpiredHandler } = await loadClient(fetchMock);
     const onExpired = vi.fn();
     setSessionExpiredHandler(onExpired);
@@ -58,15 +58,44 @@ describe('api client', () => {
     expect(fetchMock).toHaveBeenCalledTimes(2); // original request and one refresh: no retry, no loop
   });
 
-  it('exposes the API validation messages on errors', async () => {
-    const fetchMock = vi
-      .fn()
-      .mockResolvedValue(json(400, { message: ['model must not be empty'] }));
+  it('exposes one message per failed field from a problem document', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      json(400, {
+        status: 400,
+        detail: 'Request validation failed',
+        errors: [
+          { pointer: '#/model', detail: 'model must not be empty' },
+          { pointer: '#/plateNumber', detail: 'plateNumber must be shorter than 20' },
+        ],
+      }),
+    );
     const { api } = await loadClient(fetchMock);
 
     await expect(api.signIn('a@b.c', 'x')).rejects.toMatchObject({
       status: 400,
-      messages: ['model must not be empty'],
+      messages: ['model must not be empty', 'plateNumber must be shorter than 20'],
+    });
+  });
+
+  it('uses the detail of a problem document without a field list', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(json(409, { status: 409, detail: 'Email is already registered' }));
+    const { api } = await loadClient(fetchMock);
+
+    await expect(api.signUp('a@b.c', 'password1')).rejects.toMatchObject({
+      status: 409,
+      messages: ['Email is already registered'],
+    });
+  });
+
+  it('falls back to a generic text when the body is not a problem document', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(json(502, 'upstream down'));
+    const { api } = await loadClient(fetchMock);
+
+    await expect(api.signIn('a@b.c', 'x')).rejects.toMatchObject({
+      status: 502,
+      messages: ['Something went wrong. Please try again.'],
     });
   });
 

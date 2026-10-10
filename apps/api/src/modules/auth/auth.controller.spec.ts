@@ -12,6 +12,7 @@ const result = {
 
 async function signInCookieOptions(appEnv: 'dev' | 'prod') {
   const cookie = vi.fn();
+  const setHeader = vi.fn();
   const controller = new AuthController(
     { signIn: () => Promise.resolve(result) } as unknown as AuthService,
     { get: (key: string) => (key === 'APP_ENV' ? appEnv : 7) } as unknown as ConfigService<
@@ -19,11 +20,29 @@ async function signInCookieOptions(appEnv: 'dev' | 'prod') {
       true
     >,
   );
-  await controller.signIn({ email: 'a@b.c', password: 'x' }, { cookie } as unknown as Response);
+  await controller.signIn({ email: 'a@b.c', password: 'x' }, {
+    cookie,
+    setHeader,
+  } as unknown as Response);
   return cookie.mock.calls[0]?.[2] as Record<string, unknown>;
 }
 
 describe('refresh cookie', () => {
+  it('is never cached together with the access token it travels with', async () => {
+    const setHeader = vi.fn();
+    const controller = new AuthController(
+      { signIn: () => Promise.resolve(result) } as unknown as AuthService,
+      { get: () => 7 } as unknown as ConfigService<never, true>,
+    );
+
+    await controller.signIn({ email: 'a@b.c', password: 'x' }, {
+      cookie: vi.fn(),
+      setHeader,
+    } as unknown as Response);
+
+    expect(setHeader).toHaveBeenCalledWith('Cache-Control', 'no-store');
+  });
+
   it('is Secure in prod only', async () => {
     expect(await signInCookieOptions('prod')).toMatchObject({ secure: true });
     expect(await signInCookieOptions('dev')).toMatchObject({ secure: false });

@@ -10,6 +10,8 @@ import {
   Patch,
   Post,
   Query,
+  Req,
+  Res,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -21,6 +23,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import type { Request, Response } from 'express';
 import { CurrentUser } from '../../common/decorators/current-user.decorator.js';
 import type { AuthenticatedUser } from '../../common/interfaces/authenticated-user.interface.js';
 import { PaginationQueryDto } from '../../common/pagination/pagination.dto.js';
@@ -43,8 +46,16 @@ export class VehiclesController {
   @ApiOperation({ summary: 'Create a vehicle owned by the current user' })
   @ApiCreatedResponse({ type: VehicleResponseDto })
   @ApiConflictResponse({ description: 'Plate number already exists' })
-  create(@CurrentUser() user: AuthenticatedUser, @Body() dto: CreateVehicleDto): Promise<Vehicle> {
-    return this.vehicles.create(user, dto);
+  async create(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: CreateVehicleDto,
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<Vehicle> {
+    const vehicle = await this.vehicles.create(user, dto);
+    // RFC 9110 s10.2.2: for 201, Location names the created resource.
+    res.location(`${req.originalUrl.split('?')[0]?.replace(/\/$/, '')}/${vehicle.id}`);
+    return vehicle;
   }
 
   @Get()

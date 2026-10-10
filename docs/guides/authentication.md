@@ -28,6 +28,28 @@ else uses `THROTTLE_LIMIT`. `POST /auth/refresh` has its own, looser bucket (`RE
 minute) because the web app calls it on every page load. If the session check fails with a network
 error, 429 or 5xx, the web app shows a retry button instead of signing the user out. Over the limit the API answers 429 with a `Retry-After` header.
 
+## Errors and tokens
+
+Errors are RFC 9457 problem documents (`application/problem+json`), described in
+[ADR 0010](../adr/0010-http-standards-conformance.md):
+
+```json
+{
+  "type": "about:blank",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "Request validation failed",
+  "code": "VALIDATION_FAILED",
+  "errors": [{ "pointer": "#/email", "detail": "email must be an email" }]
+}
+```
+
+Branch on `status` and `code`, not on the text of `detail`. A 401 from a protected route carries
+`WWW-Authenticate: Bearer realm="api"`, with `error="invalid_token"` when a token was sent and rejected.
+Access tokens are HS256 JWTs with `iss` `nest-next-starter` and `aud` `nest-next-starter-api`
+(`JWT_ISSUER` and `JWT_AUDIENCE` in `auth.constants.ts`); other algorithms, issuers and audiences are
+rejected. Sign-up accepts passwords of at most 72 bytes, because bcrypt ignores the rest.
+
 ## Trying it with curl
 
 ```bash

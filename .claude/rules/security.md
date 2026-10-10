@@ -6,6 +6,7 @@ Design: [ADR 0002](../../docs/adr/0002-auth-refresh-rotation.md), [ADR 0003](../
 - Validate all input at the edge with DTOs; never trust ids or roles from a request body.
 - Authorize in the service: filter by owner unless the caller is an admin, and answer 404 for others'
   data. Do not rely on the client hiding things.
+- Access tokens: HS256 only, with `iss` and `aud` checked ([ADR 0010](../../docs/adr/0010-http-standards-conformance.md)).
 - Passwords: `bcryptjs`. Refresh tokens: random, stored only as a SHA-256 hash, rotated on use.
 - Never log tokens, cookies, passwords or full request bodies. Add new secret-bearing keys to
   `REDACTED_PATHS`.
