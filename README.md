@@ -95,6 +95,7 @@ docs/    architecture, ADRs, guides
   - [0007 No trust proxy](docs/adr/0007-no-trust-proxy.md)
   - [0008 Rate limiting fails open](docs/adr/0008-throttler-redis-fail-open.md)
   - [0009 CSP allows inline scripts](docs/adr/0009-csp-unsafe-inline.md)
+  - [0010 HTTP and token standards](docs/adr/0010-http-standards-conformance.md)
 - Guides:
   - [Getting started](docs/guides/getting-started.md)
   - [Database and migrations](docs/guides/database-and-migrations.md)

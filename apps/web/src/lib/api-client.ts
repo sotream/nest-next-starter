@@ -3,7 +3,7 @@ import type { AuthResponse, Page, User, Vehicle, VehicleInput } from './types';
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 const API_PREFIX = `${API_URL}/api/v1`;
 
-/** Non-2xx response. `messages` holds the API's validation or error text, ready to show. */
+/** Non-2xx response. `messages` holds the problem document's text, ready to show. */
 export class ApiError extends Error {
   constructor(
     readonly status: number,
@@ -22,13 +22,22 @@ export function setSessionExpiredHandler(handler: (() => void) | null): void {
   onSessionExpired = handler;
 }
 
+const hasDetail = (value: unknown): value is { detail: string } =>
+  typeof value === 'object' &&
+  value !== null &&
+  'detail' in value &&
+  typeof value.detail === 'string';
+
+/**
+ * Reads an RFC 9457 problem document. Validation failures list one `detail` per field in `errors`;
+ * everything else has a single `detail`. Anything unrecognised falls back to a generic text.
+ */
 function extractMessages(body: unknown, fallback: string): string[] {
-  if (typeof body === 'object' && body !== null && 'message' in body) {
-    const { message } = body;
-    if (typeof message === 'string') return [message];
-    if (Array.isArray(message)) return message.filter((m): m is string => typeof m === 'string');
+  if (typeof body === 'object' && body !== null && 'errors' in body && Array.isArray(body.errors)) {
+    const details = body.errors.filter(hasDetail).map((error) => error.detail);
+    if (details.length > 0) return details;
   }
-  return [fallback];
+  return hasDetail(body) ? [body.detail] : [fallback];
 }
 
 async function send(path: string, init: RequestInit = {}): Promise<Response> {

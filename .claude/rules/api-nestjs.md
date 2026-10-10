@@ -14,7 +14,8 @@ Layout and rationale: [architecture](../../docs/architecture/overview.md), [ADR 
   unknown fields, so never accept `ownerId` or `role` from a body.
 - Every route is protected unless marked `@Public()`. Use `@Roles()` for role limits and
   `@CurrentUser()` for the caller.
-- Throw Nest HTTP exceptions with a message a client can act on. Map unique-constraint errors to 409
+- Throw Nest HTTP exceptions with a message a client can act on; `ProblemDetailsFilter` turns them into
+  RFC 9457 problem documents, so never build an error body by hand. Map unique-constraint errors to 409
   with `isUniqueViolation`. Report someone else's resource as 404, not 403.
 - Document each route: `@ApiTags`, `@ApiOperation`, response decorators, `@ApiBearerAuth` where needed.
   Give DTO fields `@ApiProperty`.

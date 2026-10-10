@@ -10,6 +10,7 @@ import type { EnvironmentVariables } from '../../infrastructure/config/env.valid
 import { User } from '../users/entities/user.entity.js';
 import { AuthController } from './auth.controller.js';
 import { AuthService } from './auth.service.js';
+import { buildJwtOptions } from './jwt-options.js';
 import { RefreshTokenCleanupService } from './refresh-token-cleanup.service.js';
 import { RefreshToken } from './entities/refresh-token.entity.js';
 
@@ -19,10 +20,11 @@ import { RefreshToken } from './entities/refresh-token.entity.js';
     TypeOrmModule.forFeature([User, RefreshToken]),
     JwtModule.registerAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService<EnvironmentVariables, true>) => ({
-        secret: config.get('JWT_ACCESS_SECRET', { infer: true }),
-        signOptions: { expiresIn: config.get('ACCESS_TOKEN_TTL_SECONDS', { infer: true }) },
-      }),
+      useFactory: (config: ConfigService<EnvironmentVariables, true>) =>
+        buildJwtOptions(
+          config.get('JWT_ACCESS_SECRET', { infer: true }),
+          config.get('ACCESS_TOKEN_TTL_SECONDS', { infer: true }),
+        ),
     }),
   ],
   controllers: [AuthController],

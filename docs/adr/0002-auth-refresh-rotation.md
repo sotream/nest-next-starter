@@ -22,8 +22,8 @@ long-lived token in `localStorage` exposes it to any script on the page.
   family is revoked. The legitimate holder is signed out too, which is the safe outcome.
 - **Atomic revoke:** rotation uses `UPDATE ... WHERE id = ? AND revoked_at IS NULL`. Of two concurrent
   requests with the same token only one affects a row, so a race cannot mint two valid children.
-- **Passwords:** `bcryptjs` (pure JavaScript, no native build), cost 10, inputs capped at 72 characters
-  because bcrypt ignores the rest. Unknown emails are compared against a dummy hash so sign-in time does
+- **Passwords:** `bcryptjs` (pure JavaScript, no native build), cost 10, inputs capped at 72 bytes
+  on sign-up because bcrypt ignores the rest. Unknown emails are compared against a dummy hash so sign-in time does
   not reveal which emails exist.
 
 ## Consequences

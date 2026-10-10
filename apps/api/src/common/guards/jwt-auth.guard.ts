@@ -2,6 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
+import type { Response } from 'express';
+import { readBearerToken } from '../http/bearer-token.js';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator.js';
 import { Role } from '../enums/role.enum.js';
 import type {
@@ -9,11 +11,18 @@ import type {
   AuthenticatedUser,
 } from '../interfaces/authenticated-user.interface.js';
 
-const BEARER_PREFIX = 'Bearer ';
+const REALM = 'api';
 
-function extractBearerToken(request: AuthenticatedRequest): string | undefined {
-  const header = request.headers.authorization;
-  return header?.startsWith(BEARER_PREFIX) ? header.slice(BEARER_PREFIX.length) : undefined;
+/**
+ * RFC 9110 s11.6.1 requires a challenge on every 401. Per RFC 6750 s3 `error` is only added when a
+ * token was sent and rejected, not when credentials are missing.
+ */
+function unauthorized(response: Response, rejectedToken: boolean): UnauthorizedException {
+  response.setHeader(
+    'WWW-Authenticate',
+    rejectedToken ? `Bearer realm="${REALM}", error="invalid_token"` : `Bearer realm="${REALM}"`,
+  );
+  return new UnauthorizedException();
 }
 
 function toAuthenticatedUser(payload: Record<string, unknown>): AuthenticatedUser {
@@ -41,20 +50,20 @@ export class JwtAuthGuard implements CanActivate {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
-    const token = extractBearerToken(request);
+    const http = context.switchToHttp();
+    const request = http.getRequest<AuthenticatedRequest>();
+    const response = http.getResponse<Response>();
+    const token = readBearerToken(request.headers.authorization);
     if (!token) {
-      throw new UnauthorizedException();
+      throw unauthorized(response, false);
     }
-    request.user = toAuthenticatedUser(await this.verify(token));
-    return true;
-  }
-
-  private async verify(token: string): Promise<Record<string, unknown>> {
     try {
-      return await this.jwt.verifyAsync<Record<string, unknown>>(token);
+      request.user = toAuthenticatedUser(
+        await this.jwt.verifyAsync<Record<string, unknown>>(token),
+      );
     } catch {
-      throw new UnauthorizedException();
+      throw unauthorized(response, true);
     }
+    return true;
   }
 }
