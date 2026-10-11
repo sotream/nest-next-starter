@@ -4,6 +4,7 @@
 | ------------ | ----------------------------------------------------------------------- |
 | Architecture | [Overview](architecture/overview.md)                                    |
 | Deployment   | [Deployment guide](guides/deployment.md)                                |
+| Changes      | [Changelog](../CHANGELOG.md)                                            |
 | Decisions    | [ADR template](adr/template.md) and the numbered records below          |
 |              | [0001 Modular monolith](adr/0001-modular-monolith.md)                   |
 |              | [0002 Refresh token rotation](adr/0002-auth-refresh-rotation.md)        |
