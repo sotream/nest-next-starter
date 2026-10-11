@@ -85,6 +85,7 @@ docs/    architecture, ADRs, guides
 ## Documentation
 
 - [Architecture overview](docs/architecture/overview.md)
+- [Changelog](CHANGELOG.md)
 - Decisions (ADR):
   - [0001 Modular monolith](docs/adr/0001-modular-monolith.md)
   - [0002 Refresh rotation](docs/adr/0002-auth-refresh-rotation.md)
