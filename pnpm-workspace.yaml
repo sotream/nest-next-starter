@@ -24,3 +24,7 @@ minimumReleaseAgeExclude:
   - next@16.4.0
   - '@next/eslint-plugin-next@16.4.0'
   - eslint-config-next@16.4.0
+
+overrides:
+  # GHSA-q7qp-rjg7-q26m: @nestjs/platform-express pins multer 2.4.0 exactly, fix is 2.5.0. Remove once platform-express pins >= 2.5.0.
+  multer: 2.5.0
