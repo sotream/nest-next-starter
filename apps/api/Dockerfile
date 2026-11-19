@@ -1,5 +1,5 @@
 # Build from the repository root: docker build -f apps/api/Dockerfile -t nest-next-starter-api .
-FROM node:24-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85 AS base
+FROM node:24-alpine@sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5 AS base
 RUN corepack enable
 WORKDIR /repo
 
@@ -15,7 +15,7 @@ COPY apps/api apps/api
 RUN pnpm --filter api build \
     && pnpm --filter api deploy --prod --ignore-scripts /out
 
-FROM node:24-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85 AS runtime
+FROM node:24-alpine@sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5 AS runtime
 ENV NODE_ENV=production
 WORKDIR /app
 COPY --from=build --chown=node:node /out/node_modules ./node_modules
